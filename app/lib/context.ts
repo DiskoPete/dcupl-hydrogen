@@ -2,6 +2,7 @@ import {createHydrogenContext} from '@shopify/hydrogen';
 import {AppSession} from '~/lib/session';
 import {CART_QUERY_FRAGMENT} from '~/lib/fragments';
 import {getLocaleFromRequest} from '~/lib/i18n';
+import {createDcuplContext} from '~/lib/dcupl';
 
 /**
  * The context implementation is separate from server.ts
@@ -40,5 +41,6 @@ export async function createAppLoadContext(
   return {
     ...hydrogenContext,
     // declare additional Remix loader context
+    ...await createDcuplContext({projectId: env.DCUPL_PROJECT_ID, apiKey: env.DCUPL_API_KEY}),
   };
 }
