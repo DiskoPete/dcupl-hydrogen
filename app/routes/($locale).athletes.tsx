@@ -4,11 +4,13 @@ import {useLoaderData} from "@remix-run/react";
 export async function loader({context}: LoaderFunctionArgs) {
     const {dcupl} = context;
     const athletesList = await dcupl.lists.create({modelKey: 'Athlete'});
+    const athletes = athletesList.catalog.query.execute()
 
     console.log(athletesList.catalog.fn.metadata());
+    console.log(athletes);
 
   return {
-    athletes: athletesList.catalog.query.execute()
+    athletes
   }
 }
 
@@ -25,7 +27,10 @@ export default function Page() {
   return (
       <div>
           <h1>Our athletes</h1>
-          {athletes.map((athlete) => AthleteCard({athlete}))}
+          <p>Athlete count {athletes.length}</p>
+            {athletes.map((athlete) => (
+                <AthleteCard key={athlete.key} athlete={athlete} />
+            ))}
       </div>
   );
 }
